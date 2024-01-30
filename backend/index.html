@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Client</title>
+</head>
+<body>
+  <h1>Socket.IO Client</h1>
+  <input type="text" id="messageInput" placeholder="Type a message">
+  <button onclick="sendMessage()">Send Message</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+  <script>
+    const socket = io('http://localhost:5000/'); // Replace with your Socket.IO server URL
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('message', (receivedMessage) => {
+      console.log('Received message:', receivedMessage);
+    });
+
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value.trim();
+
+      if (message !== '') {
+        const payload = { sender: 'YourUsername', content: message };
+
+        socket.emit('message', payload);
+        console.log('Sent message:', payload);
+
+        // Optionally, clear the input field after sending the message
+        messageInput.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
